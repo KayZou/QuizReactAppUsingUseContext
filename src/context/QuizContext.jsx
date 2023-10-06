@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 
 export const QuizContext = createContext();
 
@@ -7,25 +7,21 @@ const QuizProvider = ({ children }) => {
     username: "",
     currentQuestion: 0,
     score: 0,
-    questions: [
-      {
-        question: "What is the capital of France?",
-        answers: ["Paris", "London", "Rome", "Berlin"],
-        correctAnswer: "Paris",
-      },
-      {
-        question: "What is the square root of 16?",
-        answers: ["4", "8", "16", "32"],
-        correctAnswer: "4",
-      },
-      {
-        question: "What is the chemical symbol for water?",
-        answers: ["H2O", "O2", "H2", "CO2"],
-        correctAnswer: "H2O",
-      },
-    ],
+    questions: [],
   });
-
+  useEffect(() => {
+    fetch("../../public/qt.json")
+      .then((response) => response.json())
+      .then((data) => {
+        setState((prevState) => ({
+          ...prevState,
+          questions: data,
+        }));
+      })
+      .catch((error) => {
+        console.error("Error fetching quiz data: ", error);
+      });
+  }, []);
   return (
     <QuizContext.Provider value={{ state, setState }}>
       {children}

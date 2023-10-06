@@ -1,7 +1,6 @@
 import { useState, useContext } from "react";
 import { QuizContext } from "../context/QuizContext";
 
-
 const Quiz = () => {
   const { state, setState } = useContext(QuizContext);
 
